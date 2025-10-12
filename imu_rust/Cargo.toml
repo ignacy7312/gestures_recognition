@@ -1,0 +1,11 @@
+[package]
+name = "imu_rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Zestaw spójny na embedded-hal 0.2.x (bez konfliktów traitów)
+bno080 = { version = "0.1.3" }
+linux-embedded-hal = "0.3.2"
+embedded-hal = "0.2.7"
+anyhow = "1"

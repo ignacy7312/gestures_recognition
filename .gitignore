@@ -1,0 +1,46 @@
+# === Rust / Cargo ===
+/target/
+/Cargo.lock
+**/*.rs.bk
+
+# build artifacts
+*.rlib
+*.rmeta
+
+# incremental
+/target/**/incremental
+**/*.dSYM
+**/*.pdb
+
+# rustfmt / rust-analyzer
+.rustfmt.toml
+/.rustup/
+/.rust-analyzer/
+/.idea/
+/.vscode/
+*.iml
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+logs/
+*.trace
+
+# misc
+*.swp
+*.swo
+
+# cross / artifacts
+*.a
+*.o
+
+# coverage / benches
+coverage/
+.profraw
+*.profdata
+
+# binaries (if you build into repo root)
+#imu_rust
