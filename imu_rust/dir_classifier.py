@@ -87,7 +87,7 @@ def main():
         last_label = None
         cool = 0
 
-        print("# t, ax_w, ay_w, az_w, |a_w|, label")
+        print("# t, ax_w, ay_w, az_w, |a_w|, duration_s, label")
         for row in rdr:
             if len(row) < 11:
                 continue
@@ -113,13 +113,18 @@ def main():
             buf.append((t, ax_w, ay_w, az_w, amag))
 
             if args.print_samples:
-                print(f"{t:.6f},{ax_w:.3f},{ay_w:.3f},{az_w:.3f},{amag:.3f},")
+                print(f"{t:.6f},{ax_w:.3f},{ay_w:.3f},{az_w:.3f},{amag:.3f},,")
 
             if len(buf) >= win_len and cool == 0:
                 tpk, xpk, ypk, zpk, _ = max(buf, key=lambda it: abs(it[1])+abs(it[2])+abs(it[3]))
                 label = classify(xpk, ypk, zpk, args.acc_thr)
                 if label and label != last_label:
-                    print(f"{tpk:.6f},{xpk:.3f},{ypk:.3f},{zpk:.3f},,{label}")
+                    window_start = buf[0][0]
+                    window_end = buf[-1][0]
+                    duration = max(0.0, window_end - window_start)
+                    print(f"{tpk:.6f},{xpk:.3f},{ypk:.3f},{zpk:.3f},,{duration:.3f},{label}")
+                    peak_mag = math.sqrt(xpk * xpk + ypk * ypk + zpk * zpk)
+                    print(f">>> gesture @ {tpk:.3f}s | duration={duration:.3f}s | label={label} | peak_w=({xpk:.2f}, {ypk:.2f}, {zpk:.2f}) | |a|={peak_mag:.2f} m/s^2")
                     last_label = label
                     cool = int(0.25 * args.hz)  # 250 ms cooldown
 
