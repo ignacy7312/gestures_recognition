@@ -1,7 +1,12 @@
 # Dokumentacja projektu IMU Rust
 
 ## 1. Wprowadzenie
-Ten projekt zbiera dane z czujnika inercyjnego BNO08X podłączonego do Raspberry Pi przez magistralę I²C. Efektem pracy `cargo build --release` jest niewielki binarny program w Rust (`src/main.rs`), który na razie czyta surowe ramki SHTP i wypisuje najważniejsze informacje w konsoli. To wciąż prototyp, ale wystarczająco stabilny, żeby zacząć badać zachowanie sensora i przygotowywać dalsze kroki.
+Projekt udostępnia kompletne narzędzie CLI do pracy z czujnikiem inercyjnym BNO08X/BNO085 na Raspberry Pi. Program `imu` potrafi:
+
+- szybko zweryfikować komunikację (podkomenda `check`) poprzez zrzut ramek SHTP,
+- zestawić strumień danych w jednostkach SI (podkomenda `read`) z automatyczną obsługą resetów i metryk wydajności.
+
+Cała logika sprzętowa znajduje się w module `src/imu.rs`, a `src/main.rs` odpowiada za interfejs użytkownika, logowanie i odczyt danych w formacie CSV.
 
 ## 2. Sprzęt i wymagania
 - Raspberry Pi 3B+ (albo inny model z aktywnym `i2c-1`).
@@ -34,22 +39,30 @@ Ten projekt zbiera dane z czujnika inercyjnego BNO08X podłączonego do Raspberr
 
 ## 3. Konfiguracja oprogramowania
 1. Zainstaluj Rust i Cargo przy pomocy `rustup`.
-2. W katalogu repozytorium uruchom `cargo build --release`, żeby dostać gotowy binarny plik.
-3. Do szybkiego testu spróbuj `cargo run --release`; pamiętaj, że potrzebny jest dostęp do `/dev/i2c-1`.
+2. W katalogu repozytorium wykonaj `cargo build --release`, żeby zbudować binarkę `target/release/imu_rust`.
+3. Zweryfikuj dostępność narzędzia i podkomend:
+   - `cargo run -- --help`
+   - `cargo run -- check --help`
+   - `cargo run -- read --help`
+4. Do testu komunikacji użyj `cargo run -- check --bus 1 --addr 0x4A`.
+5. Strumień danych uruchom poleceniem `cargo run -- read --bus 1 --addr 0x4A --hz 100`.
 
-## 4. Jak działa `src/main.rs`
-Program korzysta z `linux-embedded-hal::I2cdev`, dzięki czemu otwiera `/dev/i2c-1` pod adresem `0x4A`. Stała `MAX_FRAME` zabezpiecza bufor odbioru (512 B, żeby nie przepełnić pamięci). Kluczowy element to struktura `ShtpHeader`, która parsuje 4 bajty nagłówka na pola `len`, `channel` i `sequence`. Główna pętla wygląda z grubsza tak:
+## 4. Struktura oprogramowania
 
-- najpierw `i2c.read(...)` pobiera nagłówek; interfejs z traitu `embedded_hal::blocking::i2c::Read` umożliwia ewentualne migracje na inną warstwę sprzętową,
-- sprawdzamy, czy `len` ma sensowną wartość, a potem liczymy długość payloadu (`len - 4`); przy dziwnych danych leci `anyhow::bail`,
-- jeśli jest co czytać, drugi `read` ściąga payload do dynamicznego wektora,
-- w logu ląduje nagłówek oraz pierwsze 16 bajtów payloadu zapisane w hexie,
-- na końcu `thread::sleep(5 ms)` daje odsapnąć magistrali i CPU.
+### 4.1. `src/main.rs` – warstwa CLI
+- Wykorzystuje `clap` do obsługi dwóch podkomend: `check` i `read`.
+- `check` otwiera wskazaną magistralę I²C, cyklicznie czyta nagłówki/payloady SHTP i wypisuje je w czytelnej formie, co pozwala szybko stwierdzić, czy połączenie działa.
+- `read` uruchamia pełne `Imu::init`, konfiguruje raporty sensora, zbiera dane i wypisuje je na stdout jako CSV (`t, ax, ay, ...`). Jednocześnie na stderr lecą logi i metryki (co 5 s: liczba ramek, spadki, efektywne Hz, ostatni błąd).
+- Obsługa sygnału `SIGINT` (`ctrlc`) pozwala na bezpieczne wyjście, a przy błędach program próbuje resetu sensora lub pełnej re-inicjalizacji z progresywnym backoffem.
 
-Całość jest opleciona `anyhow::Context`, więc w logach pojawiają się sensowniejsze błędy (np. „nie mogę otworzyć /dev/i2c-1”), co bardzo pomaga przy diagnozie podłączeń.
+### 4.2. `src/imu.rs` – sterownik wysokiego poziomu
+- `Imu::init` tworzy `I2cInterface<I2cdev>` z `linux-embedded-hal`, wykonuje sekwencję bootstrap (soft reset, czyszczenie kolejek, weryfikacja Product ID) oraz włącza wymagane raporty SH-2 (rotacja, przyspieszenia, żyroskop).
+- `poll_frame(timeout)` blokuje do momentu złożenia spójnej ramki (`Frame`) zawierającej orientację (kwaternion), przyspieszenia i prędkości kątowe. Dane są konwertowane z przestrzeni Q w SI.
+- Wewnętrzne bufory i liczniki dbają o poprawną numerację sekwencji SHTP, a przy każdym pakiecie weryfikowany jest kanał (`Sensor`, `Hub control`, `Command`, itd.).
+- Błędy I²C są mapowane na `ImuError`, co umożliwia warstwie CLI podejmowanie akcji naprawczych (reset, ponowne otwarcie magistrali).
 
 ## 5. Co dalej?
-- Rozszyfrowanie payloadów SHTP w zależności od kanału (rotacja, akcelerometr, itd.).
-- Buforowanie danych na dysk albo wypychanie ich w sieć.
-- Testy jednostkowe dla parsera nagłówków, żeby złapać regresje.
-- Uzupełnienie dokumentacji o diagram przepływu danych i wskazówki dotyczące unitów systemd.
+- Dodanie kolejnych raportów (np. kalibracja magnetometru) oraz konfiguracji czułości.
+- Eksport danych do innych formatów (np. Parquet) lub streamowanie po sieci.
+- Testy jednostkowe dla parserów raportów oraz testy integracyjne z mockiem I²C.
+- Diagram przepływu danych i instrukcja integracji z usługą systemową (systemd, docker).
