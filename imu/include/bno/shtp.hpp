@@ -23,11 +23,14 @@ struct ShtpHeader {
 /// Kanały SHTP używane przez SH-2.
 /// Konkretny mapping zweryfikuj w SH-2 Reference Manual.
 enum class ShtpChannel : std::uint8_t {
-    Command      = 0,  ///< komendy SH-2, feature requests itd.
-    Control      = 1,  ///< sterowanie, sleep/wake, itp.
-    SensorReport = 2,  ///< podstawowy kanał raportów sensorowych (SH-2)
-    // Inne kanały na razie pomijamy (nie są potrzebne do MVP).
+    Command      = 0,  ///< zarezerwowany / nieużywany
+    Executable   = 1,  ///< reset / on / sleep
+    Control      = 2,  ///< kanał konfiguracji SH-2 (Set Feature itd.)
+    SensorReport = 3,  ///< podstawowy kanał raportów sensorowych (inputNormal)
+    WakeReport   = 4,  ///< wake input sensor reports (nie używamy na razie)
+    GyroRV       = 5,  ///< osobny kanał dla gyro rotation vector
 };
+
 
 /// Prosty błąd transportu / protokołu.
 struct ShtpError {

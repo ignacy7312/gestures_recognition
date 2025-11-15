@@ -1,10 +1,20 @@
 #include "bno/shtp.hpp"
 
+#include <array>
+#include <cerrno>
 #include <chrono>
+#include <cstdint>
 #include <cstring>
+#include <iostream>
+#include <optional>
+#include <string>
+#include <system_error>
+#include <thread>
+#include <vector>
+
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
-#include <stdexcept>
+#include <poll.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
@@ -12,10 +22,8 @@ namespace bno {
 
 namespace {
 
-void fill_io_error(ShtpError& err, ShtpError::Code code, const char* msg) {
-    err.code = code;
-    err.sys_errno = errno;
-    err.message = msg ? msg : "";
+std::string make_i2c_dev_path(int bus) {
+    return "/dev/i2c-" + std::to_string(bus);
 }
 
 } // namespace
@@ -27,21 +35,26 @@ ShtpI2cTransport::~ShtpI2cTransport() {
 bool ShtpI2cTransport::open(int bus, std::uint8_t addr, ShtpError& err) {
     close();
 
-    std::string dev = "/dev/i2c-" + std::to_string(bus);
-    fd_ = ::open(dev.c_str(), O_RDWR | O_CLOEXEC);
-    if (fd_ < 0) {
-        fill_io_error(err, ShtpError::Code::IoError, "open /dev/i2c-X failed");
+    std::string path = make_i2c_dev_path(bus);
+    int fd = ::open(path.c_str(), O_RDWR | O_CLOEXEC);
+    if (fd < 0) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = errno;
+        err.message   = "open(" + path + ") failed";
         return false;
     }
 
-    if (ioctl(fd_, I2C_SLAVE, addr) < 0) {
-        fill_io_error(err, ShtpError::Code::IoError, "ioctl(I2C_SLAVE) failed");
-        close();
+    if (ioctl(fd, I2C_SLAVE, addr) < 0) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = errno;
+        err.message   = "ioctl(I2C_SLAVE) failed";
+        ::close(fd);
         return false;
     }
 
+    fd_   = fd;
     addr_ = addr;
-    err = ShtpError{};
+    err   = ShtpError{};
     return true;
 }
 
@@ -52,136 +65,181 @@ void ShtpI2cTransport::close() noexcept {
     }
 }
 
-bool ShtpI2cTransport::read_exact(std::uint8_t* buf,
-                                  std::size_t len,
-                                  int timeout_ms,
-                                  ShtpError& err) {
+///
+/// Czytanie ramki SHTP po I²C.
+/// Schemat:
+///   1. poll() z timeoutem,
+///   2. read(4) → nagłówek (Length[2], Channel, Sequence),
+///   3. wyliczamy length = Length & 0x7FFF,
+///   4. read(length) → cała ramka (nagłówek + payload),
+///   5. wypełniamy ShtpFrame.
+///
+std::optional<ShtpFrame> ShtpI2cTransport::read_frame(ShtpError& err,
+                                                      int timeout_ms) {
     if (fd_ < 0) {
-        fill_io_error(err, ShtpError::Code::NotOpen, "transport not open");
-        return false;
-    }
-
-    using clock = std::chrono::steady_clock;
-    auto deadline = clock::now() + std::chrono::milliseconds(timeout_ms);
-
-    std::size_t offset = 0;
-    while (offset < len) {
-        auto now = clock::now();
-        if (timeout_ms > 0 && now >= deadline) {
-            fill_io_error(err, ShtpError::Code::Timeout, "read timeout");
-            return false;
-        }
-
-        ssize_t n = ::read(fd_, buf + offset, len - offset);
-        if (n < 0) {
-            if (errno == EAGAIN || errno == EINTR) {
-                continue;
-            }
-            fill_io_error(err, ShtpError::Code::IoError, "read failed");
-            return false;
-        }
-        if (n == 0) {
-            fill_io_error(err, ShtpError::Code::IoError, "read EOF");
-            return false;
-        }
-        offset += static_cast<std::size_t>(n);
-    }
-
-    err = ShtpError{};
-    return true;
-}
-
-bool ShtpI2cTransport::write_exact(const std::uint8_t* buf,
-                                   std::size_t len,
-                                   ShtpError& err) {
-    if (fd_ < 0) {
-        fill_io_error(err, ShtpError::Code::NotOpen, "transport not open");
-        return false;
-    }
-
-    std::size_t offset = 0;
-    while (offset < len) {
-        ssize_t n = ::write(fd_, buf + offset, len - offset);
-        if (n < 0) {
-            if (errno == EAGAIN || errno == EINTR) {
-                continue;
-            }
-            fill_io_error(err, ShtpError::Code::IoError, "write failed");
-            return false;
-        }
-        if (n == 0) {
-            fill_io_error(err, ShtpError::Code::IoError, "write zero bytes");
-            return false;
-        }
-        offset += static_cast<std::size_t>(n);
-    }
-
-    err = ShtpError{};
-    return true;
-}
-
-std::optional<ShtpFrame> ShtpI2cTransport::read_frame(ShtpError& err, int timeout_ms) {
-    if (fd_ < 0) {
-        fill_io_error(err, ShtpError::Code::NotOpen, "transport not open");
+        err.code      = ShtpError::Code::NotOpen;
+        err.sys_errno = EBADF;
+        err.message   = "I2C not open";
         return std::nullopt;
     }
 
-    // 1. Najpierw 4 bajty nagłówka
-    if (!read_exact(rx_buf_.data(), 4, timeout_ms, err)) {
+    // 1. poll() na fd z timeoutem
+    struct pollfd pfd;
+    pfd.fd     = fd_;
+    pfd.events = POLLIN;
+
+    int rv = ::poll(&pfd, 1, timeout_ms);
+    if (rv == 0) {
+        // timeout – brak ramki to nie błąd krytyczny
+        err = ShtpError{};
+        return std::nullopt;
+    }
+    if (rv < 0) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = errno;
+        err.message   = "poll() failed";
         return std::nullopt;
     }
 
-    ShtpHeader header{};
-    header.length_le = static_cast<std::uint16_t>(rx_buf_[0] | (rx_buf_[1] << 8));
-    header.channel   = rx_buf_[2];
-    header.sequence  = rx_buf_[3];
+    std::array<std::uint8_t, SHTP_MAX_FRAME> buf{};
 
-    if (header.length_le < 4 || header.length_le > max_frame_size_) {
-        fill_io_error(err, ShtpError::Code::OversizeFrame, "invalid SHTP length");
+    // 2. pierwszy odczyt – 4 bajty nagłówka
+    std::uint8_t header_raw[4];
+    ssize_t n = ::read(fd_, header_raw, 4);
+    if (n < 0) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = errno;
+        err.message   = "read(header) failed";
+        return std::nullopt;
+    }
+    if (n == 0) {
+        // nic na szynie – traktujemy jak brak ramki
+        err = ShtpError{};
+        return std::nullopt;
+    }
+    if (n != 4) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = EIO;
+        err.message   = "short read(header)";
         return std::nullopt;
     }
 
-    const std::size_t payload_len = header.length_le - 4;
-    if (!read_exact(rx_buf_.data() + 4, payload_len, timeout_ms, err)) {
+    std::uint16_t length = std::uint16_t(header_raw[0] |
+                                         (std::uint16_t(header_raw[1]) << 8));
+    length &= 0x7FFF; // bez bitu kontynuacji
+
+    if (length < 4 || length > max_frame_size_) {
+        err.code      = ShtpError::Code::OversizeFrame;
+        err.sys_errno = EPROTO;
+        err.message   = "invalid SHTP length=" + std::to_string(length);
         return std::nullopt;
     }
+
+    // 3. drugi odczyt – *cała* ramka length bajtów
+    n = ::read(fd_, buf.data(), length);
+    if (n < 0) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = errno;
+        err.message   = "read(frame) failed";
+        return std::nullopt;
+    }
+    if (static_cast<std::size_t>(n) != length) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = EIO;
+        err.message   = "short read(frame)";
+        return std::nullopt;
+    }
+
+    // 4. parsujemy nagłówek z buf
+    ShtpHeader hdr{};
+    std::uint16_t length2 = std::uint16_t(buf[0] |
+                              (std::uint16_t(buf[1]) << 8));
+    length2 &= 0x7FFF;
+
+    if (length2 != length) {
+        // coś dziwnego – log i odrzucamy tę ramkę
+        std::cerr << "[shtp] length mismatch header=" << length2
+                  << " second_read=" << length << "\n";
+        err.code      = ShtpError::Code::InvalidHeader;
+        err.sys_errno = EPROTO;
+        err.message   = "length mismatch";
+        return std::nullopt;
+    }
+
+    hdr.length_le = length2;
+    hdr.channel   = buf[2];
+    hdr.sequence  = buf[3];
 
     ShtpFrame frame;
-    frame.header = header;
-    frame.payload.assign(rx_buf_.data() + 4, rx_buf_.data() + 4 + payload_len);
+    frame.header = hdr;
+
+    const std::size_t payload_len = length2 - 4;
+    frame.payload.resize(payload_len);
+    if (payload_len > 0) {
+        std::memcpy(frame.payload.data(), buf.data() + 4, payload_len);
+    }
+
     err = ShtpError{};
     return frame;
 }
 
-bool ShtpI2cTransport::write_frame(ShtpChannel channel,
-                                   const std::uint8_t* data,
-                                   std::size_t len,
+///
+/// Zapisywanie ramki:
+///  - wypełniamy lokalny bufor: [len_lo, len_hi, channel, sequence, payload…]
+///  - jeden write() na I²C.
+///
+bool ShtpI2cTransport::write_frame(ShtpChannel ch,
+                                   const std::uint8_t* payload,
+                                   std::size_t payload_len,
                                    ShtpError& err) {
-    if (len + 4 > max_frame_size_) {
-        fill_io_error(err, ShtpError::Code::OversizeFrame, "frame too large");
-        return false;
-    }
     if (fd_ < 0) {
-        fill_io_error(err, ShtpError::Code::NotOpen, "transport not open");
+        err.code      = ShtpError::Code::NotOpen;
+        err.sys_errno = EBADF;
+        err.message   = "I2C not open";
         return false;
     }
 
-    // SHTP header
-    const std::uint16_t total_len = static_cast<std::uint16_t>(len + 4);
-    tx_buf_[0] = static_cast<std::uint8_t>(total_len & 0xFF);
-    tx_buf_[1] = static_cast<std::uint8_t>((total_len >> 8) & 0xFF);
-    const auto ch = static_cast<std::uint8_t>(channel);
-    tx_buf_[2] = ch;
-
-    std::uint8_t& seq = sequence_per_channel_[ch];
-    tx_buf_[3] = seq++;
-    if (seq == 0) seq = 0; // naturalny overflow uint8_t
-
-    if (len > 0 && data != nullptr) {
-        std::memcpy(tx_buf_.data() + 4, data, len);
+    const std::size_t total_len = 4 + payload_len;
+    if (total_len > max_frame_size_) {
+        err.code      = ShtpError::Code::OversizeFrame;
+        err.sys_errno = EMSGSIZE;
+        err.message   = "payload too large";
+        return false;
     }
 
-    return write_exact(tx_buf_.data(), total_len, err);
+    std::array<std::uint8_t, SHTP_MAX_FRAME> buf{};
+
+    std::uint16_t length = static_cast<std::uint16_t>(total_len);
+    buf[0] = static_cast<std::uint8_t>(length & 0xFF);
+    buf[1] = static_cast<std::uint8_t>((length >> 8) & 0x7F); // bez bitu kontynuacji
+    std::uint8_t ch_byte = static_cast<std::uint8_t>(ch);
+    buf[2] = ch_byte;
+
+    // sequence per channel – korzystamy z istniejącej tablicy sequence_per_channel_
+    std::uint8_t& seq = sequence_per_channel_[ch_byte];
+    buf[3] = seq++;
+    // overflow uint8_t jest OK
+
+    if (payload_len > 0 && payload != nullptr) {
+        std::memcpy(buf.data() + 4, payload, payload_len);
+    }
+
+    ssize_t n = ::write(fd_, buf.data(), total_len);
+    if (n < 0) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = errno;
+        err.message   = "write() failed";
+        return false;
+    }
+    if (static_cast<std::size_t>(n) != total_len) {
+        err.code      = ShtpError::Code::IoError;
+        err.sys_errno = EIO;
+        err.message   = "short write()";
+        return false;
+    }
+
+    err = ShtpError{};
+    return true;
 }
 
 } // namespace bno
