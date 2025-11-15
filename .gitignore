@@ -44,3 +44,5 @@ coverage/
 
 # binaries (if you build into repo root)
 #imu_rust
+
+imu/build

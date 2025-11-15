@@ -81,5 +81,16 @@ target_link_libraries(imu_status
         libbno_shtp
 )
 
+add_executable(imu_dir
+    src/imu_dir.cpp
+    src/shtp_linux_i2c.cpp
+    src/sh2_parser.cpp
+)
+
+target_include_directories(imu_dir PRIVATE include)
+
+# Jeżeli masz wspólną bibliotekę typu libbno_shtp, podlinkuj ją zamiast powtarzać pliki:
+# target_link_libraries(imu_dir_cpp PRIVATE bno_shtp)
+
 # Przyjazne wyjście
 message(STATUS "Configured targets: imu_read, imu_status, libbno_shtp")

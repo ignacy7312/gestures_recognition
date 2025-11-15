@@ -1,352 +1,80 @@
-t,ax,ay,az,gx,gy,gz,qw,qi,qj,qk
-[imu_read_cpp] unknown report on ch=2 len=17 : fc 1 0 0 0 40 1f 0 0 0 0 0 0 0 0 0
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 3e 0 0 0 1 0 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 22 0 0 0 1 1 2 0 0 0 a8 ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 2 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 3 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 4 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 5 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 6 2 0 f6 ff b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 7 2 0 f6 ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 8 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 9 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 a 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 b 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 c 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 d 2 0 f6 ff a8 ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 e 2 0 0 0 a8 7f c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 f 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 10 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 11 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 12 2 0 0 0 bb ff b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 13 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 14 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 15 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 16 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 17 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 18 2 0 f6 ff b2 7f ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 19 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 1a 2 0 76 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 1b 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 1c 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 1d 2 0 f6 ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 1e 2 0 76 ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 1f 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 20 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 21 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 22 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 1d 0 0 0 1 23 2 0 0 0 bb ff b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 24 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 25 2 0 f6 ff b2 7f ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 26 2 0 f6 ff b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 27 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 28 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 29 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 2a 2 0 0 0 a8 ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 2b 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 2c 2 0 f6 ff b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 2d 2 0 f6 ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 2e 2 0 f6 ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 2f 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 30 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 31 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 32 2 0 0 0 a8 ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 33 2 0 0 0 b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 34 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 35 2 0 f6 ff b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 36 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 37 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 38 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 39 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 3a 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 3b 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 3c 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 3d 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 3e 2 0 f6 ff b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 3f 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 40 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 41 2 0 0 0 bb ff b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 42 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 43 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 44 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 45 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 46 2 0 ec ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 47 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 48 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 49 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 4a 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 4b 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 4c 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 4d 2 0 f6 ff b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 4e 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 4f 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 50 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 51 2 0 76 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 52 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 53 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 54 2 0 f6 ff b2 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 55 2 0 f6 ff b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 56 2 0 ec ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 1b 0 0 0 1 57 2 0 f6 ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 58 2 0 0 0 b2 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 59 2 0 a 0 9e ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 5a 2 0 ec ff bb ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 5b 2 0 bc fe 1e ff 9d 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 5c 2 0 f8 fd 3d fe c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 5d 2 0 ed fe 16 fe ce 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 5e 2 0 31 0 28 ff cf 9
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b a 0 0 0 1 5f 2 0 89 0 d8 0 77 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 60 2 0 f5 0 61 1 8b 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 61 2 0 92 1 ff 0 e3 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 62 2 0 9 1 e3 ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 63 2 0 a 0 77 ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 64 2 0 0 0 bb ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 65 2 0 0 0 bb ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 66 2 0 f6 ff c5 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 67 2 0 0 0 a8 ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 68 2 0 a 0 c5 ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 69 2 0 a 0 c5 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 6a 2 0 14 0 cf ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 6b 2 0 27 0 ec ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 6c 82 0 1d 0 f6 ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 6d 2 0 f6 ff d9 ff bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 6e 2 0 1d 0 1d 0 bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 6f 2 0 1d 0 6c 0 ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 70 2 0 31 0 c4 0 bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 71 2 0 45 0 d8 0 a6 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 72 2 0 62 0 30 1 b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 73 2 0 6c 0 eb 0 b0 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 74 2 0 31 0 45 0 b0 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 75 2 0 1d 0 45 0 bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 76 2 0 58 0 7f 0 bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8c 0 0 0 1 77 2 0 a7 0 d8 0 b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 78 2 0 c4 0 76 0 ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 79 2 0 89 0 f6 ff b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 7a 2 0 14 0 d0 fe ce 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 7b 2 0 e3 ff 33 fe d8 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 7c 2 0 8a ff 29 fe c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 7d 2 0 81 ff 51 fe ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 1b 0 0 0 1 7e 2 0 c5 ff b3 fe d9 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 7f 2 0 d9 ff 46 ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 80 2 0 45 0 8a ff ce 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 1 2 0 a 0 94 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 82 2 0 a8 ff bc fe cf 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 83 2 0 8b fe c fe cf 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 84 2 0 f8 fd 5a fe bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 85 2 0 bb ff d9 ff a6 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 86 2 0 f6 ff d9 ff a6 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 87 2 0 0 0 c5 ff c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 88 2 0 0 0 b2 ff cf 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 89 2 0 f6 ff bb ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 8a 2 0 ec ff cf ff b0 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 8b 2 0 f6 ff a8 ff c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 8c 2 0 31 0 78 fe d6 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 8d 2 0 81 ff 79 fd 9b b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 8e 2 0 46 ff 34 fd fd b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 8f 2 0 a 0 4f ff e6 4
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b a 0 0 0 1 90 2 0 59 ff 7b fb 5b 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 91 2 0 a7 0 a1 fc a4 c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 92 2 0 89 0 78 fe 89 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 93 2 0 d9 ff e6 fc 33 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 94 2 0 d9 ff e fc a8 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 95 2 0 9d 0 c fe f5 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 96 2 0 4d 1 3b 0 95 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 97 2 0 a6 1 93 0 6c 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 98 2 0 75 1 74 2 c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 99 2 0 6b 1 40 5 b2 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 9a 2 0 ff 0 81 8 5a 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 9b 2 0 0 0 45 9 c6 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 9c 2 0 78 fe 5e 4 94 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 9d 2 0 f5 0 b1 0 7c c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 9e 2 0 ed fe b2 8 0 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 9f 2 0 29 fe 6c 9 a6 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 a0 2 0 8b fe c9 5 1c 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 a1 2 0 bc fe 5f 3 15 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 a2 2 0 b fe 42 3 cf 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 a3 2 0 6e fe 4d 1 cf 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 a4 2 0 33 fe 5b fd e3 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 a5 2 0 5b fd 99 fa 6b a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 a6 2 0 6f fd 86 fa 1c a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 7 0 0 0 1 a7 2 0 3d fe 37 fa e3 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 7 0 0 0 1 a8 2 0 f8 fd dd fb bd 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 a9 2 0 6d ff 23 fb 12 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 aa 2 0 cf ff a3 fa a7 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 ab 2 0 14 0 10 fa c4 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 ac 2 0 14 0 87 f9 d6 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 ad 2 0 31 0 2d fa 65 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 ae 2 0 f4 1 5f f9 9d 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 af 2 0 c2 2 ad 7a 31 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 b0 2 0 df 2 b5 fc 6c 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 b1 2 0 42 3 97 fc 44 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 b2 2 0 90 3 aa fd 1c a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 b3 2 0 7c 3 6e fe 1 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 b4 2 0 c1 3 8a ff ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 b5 2 0 fc 3 1c 1 76 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 b6 2 0 37 4 87 2 b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 b7 2 0 2d 4 2e 3 8 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 b8 2 0 fc 3 de 3 1 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 b9 2 0 4a 4 54 4 6c 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 ba 2 0 19 4 e7 4 6d 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 bb 2 0 d5 3 cb 3 13 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 bc 2 0 4b 3 ad 3 f6 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 bd 2 0 57 1 a3 4 76 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 be 2 0 58 0 d5 3 ed 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 bf 2 0 c6 fe 41 4 ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 c0 2 0 ee fd ab 5 a6 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 c1 2 0 16 fe 3e 6 81 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 c2 2 0 65 fd 49 5 b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 c3 2 0 c8 fc 8f 4 e2 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 c4 2 0 67 fb d7 1 58 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 c5 2 0 5 fb 9e ff 89 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 c6 2 0 5e fa 7f 0 f9 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 c7 2 0 87 f9 d4 fa a7 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 c8 2 0 10 fa d2 fc d6 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 c9 2 0 8f fa 5c fc 3a 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 ca 2 0 ac 7b 72 fa 45 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 cb 2 0 8d fc 19 fb 9c 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 cc 2 0 d fd b6 fb 44 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 cd 2 0 c7 fd 54 fb e2 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 89 0 0 0 1 ce 2 0 da fe fb fa d8 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 cf 2 0 81 ff 7c fa a7 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 d0 2 0 7f 0 5e fa ec 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 d1 2 0 e2 0 b7 fa d9 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 d2 2 0 eb 0 5f f9 8 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 d3 2 0 30 1 9b f8 4c b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 19 0 0 0 1 d4 2 0 cd 1 cb f9 e2 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 d5 2 0 38 3 23 fb d8 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 d6 2 0 b7 3 49 fc f7 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 d7 2 0 9a 3 1f fe 76 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 d8 2 0 85 4 1e ff 63 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 d9 2 0 b6 4 58 0 74 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 da 2 0 7b 4 13 1 b1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 db 2 0 18 5 3a 1 59 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 dc 2 0 84 5 9c 1 63 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 dd 2 0 84 5 60 2 bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 de 82 0 84 5 1a 3 ec 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 df 2 0 67 5 87 2 76 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 e0 2 0 f1 4 87 2 bb 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 1b 0 0 0 1 e1 2 0 fb 4 c3 1 a7 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 e2 2 0 85 4 fe 1 28 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 e3 2 0 11 3 a5 2 94 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 e4 82 0 fd 2 87 2 1 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 e5 2 0 4c 2 42 3 a 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 e6 2 0 30 1 86 3 b1 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 e7 2 0 76 0 22 5 1c a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 e8 82 0 44 0 7a 5 c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 e9 2 0 da fe db 6 c5 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 ea 2 0 b4 fd b4 6 b0 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 eb 82 0 7a fc e 5 b0 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 ec 2 0 67 fb 2e 3 ed 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 ed 2 0 ca fa 75 1 63 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 19 0 0 0 1 ee 2 0 4b fa 9d 0 1c a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 ef 2 0 41 fa 45 0 b 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8e 0 0 0 1 f0 2 0 25 f9 84 fc 95 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8e 0 0 0 1 f1 2 0 11 f9 8f fa cd b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 f2 2 0 4c f9 be fc b 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 f3 2 0 e8 fa 37 fa 44 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 f4 2 0 97 fc f fb 1 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8a 0 0 0 1 f5 2 0 e5 fd 5d fb cf 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8c 0 0 0 1 76 2 0 6d ff 4a fb e1 8a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 f7 2 0 cf ff fb fa 6d 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8c 0 0 0 1 f8 2 0 e3 ff 5e fa 77 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 f9 2 0 6c 80 6 fa 80 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 fa 82 0 4d 1 2e f9 89 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 fb 82 0 57 1 b9 f8 b0 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 fc 2 0 45 0 6a f8 45 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 7d 2 0 9c 1 88 f8 95 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 fe 2 0 24 3 2c fb bb a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 ff 2 0 73 3 3e fd a7 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 0 2 0 b7 3 1e ff 8a 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 1 2 0 a3 4 eb 0 f6 89
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 2 2 0 7b 4 8 2 c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 3 2 0 5 4 25 2 62 9
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b 9 0 0 0 1 4 2 0 8f 4 1a 3 80 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 5 2 0 54 4 9a 3 a7 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8a 0 0 0 1 6 2 0 ad 3 37 3 ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 7 2 0 2e 3 fc 83 1f 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 8 2 0 7 3 f2 3 b 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 9 2 0 12 2 11 3 d9 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8e 0 0 0 1 a 2 0 61 1 39 2 c4 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 b 2 0 9 1 74 2 ba 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 c 2 0 f5 0 87 2 27 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 d 2 0 6d ff 10 4 59 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 e 2 0 52 fd f1 4 39 b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 f 2 0 d2 fc f4 81 ae c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 10 2 0 f8 fd 45 0 ca c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 11 2 0 20 fd 14 0 39 c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 12 2 0 78 fe 3c 7f 60 b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 13 2 0 32 7f 4b fa 57 c
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b e 0 0 0 1 14 2 0 1 ff c8 fc 2e c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 14 0 0 0 1 15 2 0 a9 fe 3e fd cc b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 7 0 0 0 1 16 2 0 95 fe 3f fc a4 b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 17 2 0 1e ff dc fc bb a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 18 2 0 4f ff 2a fd c4 9
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b 10 0 0 0 1 19 2 0 81 ff 65 fd 81 9
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b c 0 0 0 1 1a 2 0 81 ff 96 fd 5b 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 1b 2 0 46 ff b4 fd ee 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8e 0 0 0 1 1c 2 0 94 ff db fd 46 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 17 0 0 0 1 1d 2 0 6c 0 64 fe 67 86
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b e 0 0 0 1 1e 2 0 eb 0 63 ff 36 5
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 1f 2 0 92 1 e3 ff 73 4
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 20 2 0 cd 1 4e 0 11 4
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 21 2 0 8 2 27 0 19 4
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 22 2 0 56 2 7f 80 2c 4
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 89 0 0 0 1 23 2 0 1b 2 93 0 8e 4
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 24 2 0 4d 1 3b 0 52 5
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 25 2 0 7e 1 63 ff 2a 6
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 26 2 0 c4 0 78 fe 97 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 27 2 0 6c 0 5a fe a8 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 28 2 0 6c 0 95 7e 14 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 29 2 0 3a 0 1 ff e5 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 2a 2 0 26 1 46 ff f6 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 2b 2 0 d 7d c2 f9 43 15
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 90 0 0 0 1 2c 2 0 d8 0 9d 0 72 d
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 2d 2 0 2f 2 58 0 ad d
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 2e 2 0 3 f4 81 ff 8b 12
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 2f 2 0 1c 1 77 ff 76 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 30 2 0 d1 fd ba 0 33 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 31 2 0 a2 5 b9 1 44 9
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8c 0 0 0 1 32 2 0 2f 2 ff 0 75 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 33 2 0 f6 ff 8a ff 4b 8d
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 34 2 0 f8 fd e4 fe 9a b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 35 2 0 8a ff 46 ff c2 b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 36 2 0 8a ff 6e fe d6 8a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 37 2 0 81 ff c9 fb 39 b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 8c 0 0 0 1 38 2 0 3c ff f9 fc ea b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 39 2 0 b3 fe d0 fe 11 c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 3a 2 0 9f fe 78 fe a4 c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 3b 2 0 59 ff 77 ff f4 b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 12 0 0 0 1 3c 2 0 e3 ff 14 0 38 b
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 3d 2 0 27 0 1d 0 9c a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 89 0 0 0 1 3e 2 0 1d 0 a8 ff 93 a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 3f 2 0 e3 ff 3c ff 80 9
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b 9 0 0 0 1 40 82 0 1e ff f7 fe d0 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 41 2 0 63 ff b3 fe 14 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 42 2 0 81 ff d0 fe c6 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 43 2 0 1d 0 e4 fe 53 86
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 15 0 0 0 1 44 2 0 93 0 82 fe 98 5
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 45 2 0 7f 0 96 fd 37 5
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 46 2 0 9d 0 79 fd ac 4
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 47 2 0 f5 0 79 fd 2c 4
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b 10 0 0 0 1 48 2 0 61 1 bd fd f3 3
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 49 2 0 9c 1 15 fe 87 4
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b 9 0 0 0 1 4a 2 0 a6 1 32 ff 7a 4
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 4b 2 0 cd 1 b ff d3 5
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 4c 2 0 cd 1 8b fe 96 6
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 4d 2 0 c3 1 b3 fe b2 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 4e 2 0 a6 1 15 ff b3 8
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 4f 82 0 75 81 b ff c4 89
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 50 2 0 4d 1 46 ff d7 8a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 90 0 0 0 1 51 82 0 65 fd 1 ff d8 9c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 52 2 0 12 2 13 a ad 3
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b 10 0 0 0 1 53 82 0 5c fc 2 fe 8a 12
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 9 0 0 0 1 54 2 0 3d f4 4a 4 5e d
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b a 0 0 0 1 55 2 0 9a 3 3f fc af c
-[imu_read_cpp] unknown report on ch=3 len=15 : fb 10 0 0 0 1 56 82 0 12 2 39 2 21 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb a 0 0 0 1 57 2 0 5d 5 6c 80 b2 7
-[imu_read_cpp] unknown report on ch=3 len=15 : fb c 0 0 0 1 58 2 0 92 1 78 fe 91 c
-[imu_read_cpp] unknown report on ch=3 len=15 : 7b c 0 0 0 1 59 2 0 bb ff 6a 2 f5 8a
-[imu_read_cpp] unknown report on ch=3 len=15 : fb e 0 0 0 1 5a 2 0 b2 ff 13 1 f7 9
-[shtp] length mismatch header=32521 second_read=19
-[imu_read_cpp] unknown report on ch=2 len=16 : f1 0 84 0 0 0 1 0 0 0 0 0 0 0 0 0
-Stopped, frames_total=0
+=== data/left10.csv ===
+  baseline_world a0: (0.000, -0.114, 7.339) m/s^2
+  window: samples 121..142 (n=21), duration=0.549 s
+  Δv_world: dvx=0.073, dvy=-0.018, dvz=-8.118 (m/s)
+  dominant axis: Z -  |Δv|=8.118
+  predicted: LEFT
+  true label (from filename): LEFT  ->  OK
+
+=== data/left1.csv ===
+  baseline_world a0: (0.030, -0.200, 9.732) m/s^2
+  window: samples 180..202 (n=22), duration=0.574 s
+  Δv_world: dvx=-0.006, dvy=0.032, dvz=-6.104 (m/s)
+  dominant axis: Z -  |Δv|=6.104
+  predicted: LEFT
+  true label (from filename): LEFT  ->  OK
+
+=== data/left2.csv ===
+  baseline_world a0: (-0.003, -0.018, 1.216) m/s^2
+  window: samples 13..34 (n=21), duration=0.549 s
+  Δv_world: dvx=0.000, dvy=-0.001, dvz=3.099 (m/s)
+  dominant axis: Z +  |Δv|=3.099
+  predicted: RIGHT
+  true label (from filename): LEFT  ->  MISMATCH
+
+=== data/left3.csv ===
+  baseline_world a0: (0.009, -0.056, 7.398) m/s^2
+  window: samples 0..15 (n=15), duration=0.378 s
+  Δv_world: dvx=0.001, dvy=0.018, dvz=0.409 (m/s)
+  dominant axis: Z +  |Δv|=0.409
+  predicted: RIGHT
+  true label (from filename): LEFT  ->  MISMATCH
+
+=== data/left4.csv ===
+  baseline_world a0: (0.030, -0.191, 9.756) m/s^2
+  window: samples 82..103 (n=21), duration=0.549 s
+  Δv_world: dvx=-0.037, dvy=0.231, dvz=-2.663 (m/s)
+  dominant axis: Z -  |Δv|=2.663
+  predicted: LEFT
+  true label (from filename): LEFT  ->  OK
+
+=== data/left5.csv ===
+  baseline_world a0: (0.017, -0.187, 9.736) m/s^2
+  window: samples 210..232 (n=22), duration=0.572 s
+  Δv_world: dvx=-0.004, dvy=0.039, dvz=-2.123 (m/s)
+  dominant axis: Z -  |Δv|=2.123
+  predicted: LEFT
+  true label (from filename): LEFT  ->  OK
+
+=== data/left6.csv ===
+  baseline_world a0: (-0.016, -0.011, 1.220) m/s^2
+  window: samples 156..177 (n=21), duration=0.548 s
+  Δv_world: dvx=0.012, dvy=-0.023, dvz=2.263 (m/s)
+  dominant axis: Z +  |Δv|=2.263
+  predicted: RIGHT
+  true label (from filename): LEFT  ->  MISMATCH
+
+=== data/left7.csv ===
+  baseline_world a0: (0.017, -0.187, 9.737) m/s^2
+  window: samples 168..189 (n=21), duration=0.549 s
+  Δv_world: dvx=-0.010, dvy=-0.021, dvz=-4.722 (m/s)
+  dominant axis: Z -  |Δv|=4.722
+  predicted: LEFT
+  true label (from filename): LEFT  ->  OK
+
+=== data/left8.csv ===
+  baseline_world a0: (-0.001, -0.115, 8.553) m/s^2
+  window: samples 10..32 (n=22), duration=0.573 s
+  Δv_world: dvx=-0.006, dvy=-0.002, dvz=-0.379 (m/s)
+  dominant axis: Z -  |Δv|=0.379
+  predicted: LEFT
+  true label (from filename): LEFT  ->  OK
+
+=== data/left9.csv ===
+  baseline_world a0: (-0.023, -0.068, 6.112) m/s^2
+  window: samples 108..130 (n=22), duration=0.571 s
+  Δv_world: dvx=-0.012, dvy=0.007, dvz=-0.031 (m/s)
+  dominant axis: Z -  |Δv|=0.031
+  predicted: LEFT
+  true label (from filename): LEFT  ->  OK
+

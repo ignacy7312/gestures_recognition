@@ -17,6 +17,7 @@ enum class Sh2SensorId : std::uint8_t {
     Accelerometer          = 0x01,
     GyroscopeCalibrated    = 0x02,
     LinearAcceleration     = 0x04,
+    Gravity                = 0x06,
     GameRotationVector     = 0x08,
 
     // opcjonalne statusowe (na później):
