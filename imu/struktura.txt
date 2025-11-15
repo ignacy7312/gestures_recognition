@@ -1,0 +1,15 @@
+cpp/
+  CMakeLists.txt
+  include/
+    bno/
+      shtp.hpp
+      sh2_reports.hpp
+  src/
+    shtp_linux_i2c.cpp
+    sh2_parser.cpp
+    imu_read_cpp.cpp
+    imu_status_cpp.cpp
+  samples/
+    sample_imu_read.csv
+    sample_imu_status.ndjson
+  README-dev.md
