@@ -18,120 +18,65 @@ Metoda (wersja z opcją A):
 """
 
 import argparse
-import csv
-import math
 import os
-from typing import List, Tuple, Optional
+from typing import Tuple, Optional
+
+import numpy as np
 
 
 # ---------- Wczytywanie danych ----------
 
 def load_csv(path: str) -> Tuple[
-    List[float],  # t
-    List[float],  # ax
-    List[float],  # ay
-    List[float],  # az
-    List[float],  # qw
-    List[float],  # qi
-    List[float],  # qj
-    List[float],  # qk
+    np.ndarray,  # t
+    np.ndarray,  # ax
+    np.ndarray,  # ay
+    np.ndarray,  # az
+    np.ndarray,  # qw
+    np.ndarray,  # qi
+    np.ndarray,  # qj
+    np.ndarray,  # qk
 ]:
     """Wczytaj kolumny t, ax, ay, az, qw, qi, qj, qk z pliku CSV."""
-    t_list: List[float] = []
-    ax_list: List[float] = []
-    ay_list: List[float] = []
-    az_list: List[float] = []
-    qw_list: List[float] = []
-    qi_list: List[float] = []
-    qj_list: List[float] = []
-    qk_list: List[float] = []
+    required_cols = ("t", "ax", "ay", "az", "qw", "qi", "qj", "qk")
+    try:
+        data = np.genfromtxt(
+            path,
+            delimiter=",",
+            names=True,
+            dtype=float,
+            ndmin=1,
+        )
+    except Exception as e:
+        raise ValueError(f"{path}: nie można odczytać pliku CSV") from e
 
-    with open(path, "r", newline="") as f:
-        reader = csv.reader(f)
-        header = next(reader, None)
-        if not header:
-            raise ValueError(f"{path}: pusty plik")
+    if data.size == 0:
+        raise ValueError(f"{path}: pusty plik")
 
-        # Zakładamy header jak z imu_read_cpp
-        # t,ax,ay,az,gx,gy,gz,qw,qi,qj,qk
-        try:
-            idx_t = header.index("t")
-            idx_ax = header.index("ax")
-            idx_ay = header.index("ay")
-            idx_az = header.index("az")
-            idx_qw = header.index("qw")
-            idx_qi = header.index("qi")
-            idx_qj = header.index("qj")
-            idx_qk = header.index("qk")
-        except ValueError as e:
-            raise ValueError(f"{path}: nie znaleziono wymaganych kolumn w headerze: {header}") from e
+    if data.dtype.names is None:
+        raise ValueError(f"{path}: brak headera z kolumnami: {required_cols}")
 
-        for row in reader:
-            if not row or len(row) <= idx_qk:
-                continue
-            try:
-                t = float(row[idx_t])
-                ax = float(row[idx_ax])
-                ay = float(row[idx_ay])
-                az = float(row[idx_az])
-                qw = float(row[idx_qw])
-                qi = float(row[idx_qi])
-                qj = float(row[idx_qj])
-                qk = float(row[idx_qk])
-            except ValueError:
-                continue
+    for col in required_cols:
+        if col not in data.dtype.names:
+            raise ValueError(f"{path}: nie znaleziono kolumny '{col}' w headerze {data.dtype.names}")
 
-            t_list.append(t)
-            ax_list.append(ax)
-            ay_list.append(ay)
-            az_list.append(az)
-            qw_list.append(qw)
-            qi_list.append(qi)
-            qj_list.append(qj)
-            qk_list.append(qk)
+    if data.shape[0] < 3:
+        raise ValueError(f"{path}: za mało próbek ({data.shape[0]})")
 
-    if len(t_list) < 3:
-        raise ValueError(f"{path}: za mało próbek ({len(t_list)})")
-
-    return t_list, ax_list, ay_list, az_list, qw_list, qi_list, qj_list, qk_list
+    columns = tuple(np.asarray(data[col], dtype=float) for col in required_cols)
+    return columns  # type: ignore[return-value]
 
 
 # ---------- Operacje na kwaternionach ----------
 
-def rotate_vector_by_quat(vx: float, vy: float, vz: float,
-                          qw: float, qi: float, qj: float, qk: float) -> Tuple[float, float, float]:
-    """
-    Obrót wektora v przez kwaternion q (zakładamy q znormalizowane).
-
-    Używamy formuły:
-        t = 2 * cross(q_vec, v)
-        v' = v + w * t + cross(q_vec, t)
-    gdzie q_vec = (qi, qj, qk), w = qw.
-    """
-    # wektor części urojonej kwaternionu
-    qx, qy, qz = qi, qj, qk
-    # t = 2 * q_vec x v
-    tx = 2.0 * (qy * vz - qz * vy)
-    ty = 2.0 * (qz * vx - qx * vz)
-    tz = 2.0 * (qx * vy - qy * vx)
-
-    # v' = v + w * t + q_vec x t
-    vpx = vx + qw * tx + (qy * tz - qz * ty)
-    vpy = vy + qw * ty + (qz * tx - qx * tz)
-    vpz = vz + qw * tz + (qx * ty - qy * tx)
-
-    return vpx, vpy, vpz
-
-
 def accel_world_from_sensor(
-    ax: List[float],
-    ay: List[float],
-    az: List[float],
-    qw: List[float],
-    qi: List[float],
-    qj: List[float],
-    qk: List[float],
-) -> Tuple[List[float], List[float], List[float]]:
+    ax: np.ndarray,
+    ay: np.ndarray,
+    az: np.ndarray,
+    qw: np.ndarray,
+    qi: np.ndarray,
+    qj: np.ndarray,
+    qk: np.ndarray,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Przekonwertuj przyspieszenia z układu sensora do układu "świata"
     przy użyciu kwaternionu Game Rotation Vector.
@@ -139,60 +84,42 @@ def accel_world_from_sensor(
     Uwaga: jeśli okaże się, że osie są "odwrócone" (np. UP wychodzi jako DOWN),
     wystarczy podmienić znak w tym miejscu albo użyć koniugatu q (qw, -qi, -qj, -qk).
     """
-    assert len(ax) == len(ay) == len(az) == len(qw) == len(qi) == len(qj) == len(qk)
-
-    awx: List[float] = []
-    awy: List[float] = []
-    awz: List[float] = []
-
-    for vx, vy, vz, w, x, y, z in zip(ax, ay, az, qw, qi, qj, qk):
-        # obracamy wektor za pomocą q
-        wx, wy, wz = rotate_vector_by_quat(vx, vy, vz, w, x, y, z)
-        awx.append(wx)
-        awy.append(wy)
-        awz.append(wz)
-
-    return awx, awy, awz
+    v = np.stack((ax, ay, az), axis=1)
+    q_vec = np.stack((qi, qj, qk), axis=1)
+    t = 2.0 * np.cross(q_vec, v)
+    rotated = v + qw[:, np.newaxis] * t + np.cross(q_vec, t)
+    return rotated[:, 0], rotated[:, 1], rotated[:, 2]
 
 
 # ---------- Baseline, okno gestu, integracja ----------
 
 def estimate_baseline(
-    t: List[float],
-    ax: List[float],
-    ay: List[float],
-    az: List[float],
+    t: np.ndarray,
+    ax: np.ndarray,
+    ay: np.ndarray,
+    az: np.ndarray,
     window_s: float = 0.2,
 ) -> Tuple[float, float, float]:
     """
     Oszacuj wektor bazowy przyspieszenia (a0) z pierwszych `window_s` sekund.
     """
-    t0 = t[0]
-    count = 0
-    sum_x = sum_y = sum_z = 0.0
+    t_rel = t - t[0]
+    mask = t_rel <= window_s
+    if not np.any(mask):
+        mask = slice(None)
 
-    for ti, xi, yi, zi in zip(t, ax, ay, az):
-        if ti - t0 > window_s:
-            break
-        sum_x += xi
-        sum_y += yi
-        sum_z += zi
-        count += 1
-
-    if count == 0:
-        count = len(t)
-        sum_x = sum(ax)
-        sum_y = sum(ay)
-        sum_z = sum(az)
-
-    return sum_x / count, sum_y / count, sum_z / count
+    return (
+        float(np.mean(ax[mask])),
+        float(np.mean(ay[mask])),
+        float(np.mean(az[mask])),
+    )
 
 
 def find_gesture_window(
-    t: List[float],
-    ax: List[float],
-    ay: List[float],
-    az: List[float],
+    t: np.ndarray,
+    ax: np.ndarray,
+    ay: np.ndarray,
+    az: np.ndarray,
     a0x: float,
     a0y: float,
     a0z: float,
@@ -208,46 +135,31 @@ def find_gesture_window(
 
     Zwraca (start_idx, end_idx) – end_idx jest EXCLUSIVE.
     """
-    if len(t) < 3:
-        return 0, len(t)
+    if t.size < 3:
+        return 0, int(t.size)
 
-    # znajdź pik |a_dyn|
-    max_mag = -1.0
-    i_peak = 0
-    for i, (ti, xi, yi, zi) in enumerate(zip(t, ax, ay, az)):
-        dx = xi - a0x
-        dy = yi - a0y
-        dz = zi - a0z
-        mag = math.sqrt(dx * dx + dy * dy + dz * dz)
-        if mag > max_mag:
-            max_mag = mag
-            i_peak = i
+    a_dyn = np.vstack((ax - a0x, ay - a0y, az - a0z))
+    magnitudes = np.linalg.norm(a_dyn, axis=0)
+    i_peak = int(np.argmax(magnitudes))
 
     t_peak = t[i_peak]
     t_start = t_peak - half_window_s
     t_end = t_peak + half_window_s
 
-    # zamiana na indeksy
-    start_idx = 0
-    while start_idx < len(t) and t[start_idx] < t_start:
-        start_idx += 1
+    start_idx = int(np.searchsorted(t, t_start, side="left"))
+    end_idx = int(np.searchsorted(t, t_end, side="right"))
 
-    end_idx = start_idx
-    while end_idx < len(t) and t[end_idx] <= t_end:
-        end_idx += 1
-
-    # sanity-check: minimum kilka próbek
     if end_idx - start_idx < 3:
-        return 0, len(t)
+        return 0, int(t.size)
 
     return start_idx, end_idx
 
 
 def integrate_dynamic_velocity(
-    t: List[float],
-    ax: List[float],
-    ay: List[float],
-    az: List[float],
+    t: np.ndarray,
+    ax: np.ndarray,
+    ay: np.ndarray,
+    az: np.ndarray,
     a0x: float,
     a0y: float,
     a0z: float,
@@ -259,28 +171,27 @@ def integrate_dynamic_velocity(
     - min_dyn_threshold: minimalna wartość |a_dyn| [m/s^2], żeby wliczyć próbkę.
     Zwraca: (dvx, dvy, dvz, duration).
     """
-    dvx = dvy = dvz = 0.0
-    if len(t) < 2:
-        return dvx, dvy, dvz, 0.0
+    if t.size < 2:
+        return 0.0, 0.0, 0.0, 0.0
 
-    duration = t[-1] - t[0]
-    for i in range(1, len(t)):
-        dt = t[i] - t[i - 1]
-        if dt <= 0:
-            continue
+    dt = np.diff(t)
+    valid_dt = dt > 0
+    if not np.any(valid_dt):
+        return 0.0, 0.0, 0.0, 0.0
 
-        dx = ax[i] - a0x
-        dy = ay[i] - a0y
-        dz = az[i] - a0z
+    a_dyn = np.vstack((ax - a0x, ay - a0y, az - a0z))
+    a_dyn = a_dyn[:, 1:]
 
-        if abs(dx) < min_dyn_threshold and abs(dy) < min_dyn_threshold and abs(dz) < min_dyn_threshold:
-            continue
+    magnitude_mask = np.any(np.abs(a_dyn) >= min_dyn_threshold, axis=0)
+    mask = valid_dt & magnitude_mask
+    if not np.any(mask):
+        return 0.0, 0.0, 0.0, float(t[-1] - t[0])
 
-        dvx += dx * dt
-        dvy += dy * dt
-        dvz += dz * dt
-
-    return dvx, dvy, dvz, duration
+    masked_dt = dt[mask]
+    masked_dyn = a_dyn[:, mask]
+    dv = np.sum(masked_dyn * masked_dt, axis=1)
+    duration = float(t[-1] - t[0])
+    return float(dv[0]), float(dv[1]), float(dv[2]), duration
 
 
 # ---------- Klasyfikacja kierunku ----------
@@ -296,21 +207,12 @@ def classify_direction(
         sign ('+' / '-'),
         magnitude (abs(Δv) tej osi)
     """
-    absx, absy, absz = abs(dvx), abs(dvy), abs(dvz)
-    if absx >= absy and absx >= absz:
-        axis = "X"
-        sign = "+" if dvx >= 0 else "-"
-        mag = absx
-    elif absy >= absx and absy >= absz:
-        axis = "Y"
-        sign = "+" if dvy >= 0 else "-"
-        mag = absy
-    else:
-        axis = "Z"
-        sign = "+" if dvz >= 0 else "-"
-        mag = absz
-
-    return axis, sign, mag
+    dv = np.array([dvx, dvy, dvz])
+    axis_idx = int(np.argmax(np.abs(dv)))
+    axis = ("X", "Y", "Z")[axis_idx]
+    axis_value = dv[axis_idx]
+    sign = "+" if axis_value >= 0 else "-"
+    return axis, sign, float(abs(axis_value))
 
 
 def axis_sign_to_label(axis: str, sign: str) -> str:
