@@ -210,6 +210,8 @@ int main(int argc, char** argv)
         if (auto res_opt = detector.poll_result()) {
             const auto& res = *res_opt;
 
+            res.compute_baseline_if_ready();
+            res.maybe_detect_gesture();
             // Prosty tekstowy output 1 linia = 1 gest
             std::cout
                 << "t=" << res.t_center
