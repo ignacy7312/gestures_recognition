@@ -23,8 +23,8 @@ inline bool sh2_set_feature(
     payload[3]  = 0;                             // feature flags MSB
 
     // report interval w mikrosekundach
-    payload[4]  = interval_us & 0xFF;
-    payload[5]  = (interval_us >> 8) & 0xFF;
+    payload[4]  = static_cast<uint8_t>(interval_us) & 0xFF;
+    payload[5]  = (static_cast<uint8_t>(interval_us) >> 8) & 0xFF;
     payload[6]  = 0;
     payload[7]  = 0;
 
@@ -58,8 +58,8 @@ inline bool enable_report_accel(
 
     return sh2_set_feature(
         transport,
-        Sh2SensorId::Accelerometer,       // from sh2_reports.hpp
-        period_us,
+        Sh2SensorId::LinearAcceleration,       // from sh2_reports.hpp
+        static_cast<uint16_t>(period_us),
         err
     );
 }
@@ -76,7 +76,7 @@ inline bool enable_report_game_rv(
     return sh2_set_feature(
         transport,
         Sh2SensorId::GameRotationVector,  // from sh2_reports.hpp
-        period_us,
+        static_cast<uint16_t>(period_us),
         err
     );
 }

@@ -8,40 +8,11 @@
 
 #include "bno/shtp.hpp"
 #include "bno/sh2_reports.hpp"
-#include "bno/gesture_dir.hpp"
-#include "bno/sh2_enable.hpp"
+#include "bno/gesture_dir.hpp"   // nasz detektor gestów
 
+using namespace std::chrono_literals;
 
-// Zakładam, że masz już funkcje typu:
-// - enable_report(sensor_id, hz, transport, err) w imu_read_cpp
-// - parse_sh2_sensor_event(...) w sh2_parser.cpp
-// Tutaj je zadeklaruję i użyję; implementacja taka sama jak w imu_read_cpp.
-
-namespace bno {
-
-// Minimalne deklaracje – dopasuj do swoich nazw:
-// struct AccelSample {
-//     double x, y, z; // m/s^2
-// };
-
-// struct GameQuatSample {
-//     double real;
-//     double i, j, k;
-// };
-
-// struct Sh2SensorEvent {
-//     std::optional<AccelSample>    accel;
-//     std::optional<GameQuatSample> game_quat;
-// };
-
-// parser SH-2 – istnieje już w Twoim projekcie
-// std::optional<Sh2SensorEvent> parse_sh2_sensor_event(const std::uint8_t* data, std::size_t len);
-
-// enable feature – istnieje już w imu_read_cpp (tu tylko deklaracja)
-// bool enable_report_accel(ShtpI2cTransport& transport, int hz, ShtpError& err);
-// bool enable_report_game_rv(ShtpI2cTransport& transport, int hz, ShtpError& err);
-
-} // namespace bno
+namespace {
 
 struct CliConfig {
     int bus = 1;
@@ -83,10 +54,42 @@ static bool parse_args(int argc, char** argv, CliConfig& cfg)
             return false;
         }
     }
-    if (cfg.hz < 50) cfg.hz = 50;
-    if (cfg.hz > 100) cfg.hz = 100;
+    if (cfg.hz < 50 || cfg.hz > 100) {
+        std::cerr << "hz must be in [50,100]\n";
+        return false;
+    }
     return true;
 }
+
+/// Dokładnie taki sam helper jak w imu_read.cpp:
+/// wysyła Set Feature Command dla podanego raportu.
+bool enable_report(bno::ShtpTransport& transport,
+                   bno::Sh2SensorId sensor,
+                   int hz,
+                   bno::ShtpError& err)
+{
+    const std::uint32_t interval_us =
+        static_cast<std::uint32_t>(1'000'000 / hz);
+
+    std::uint8_t buf[32];
+    std::size_t len = 0;
+    if (!bno::build_enable_report_command(sensor, interval_us,
+                                          buf, len, sizeof(buf))) {
+        std::cerr << "build_enable_report_command failed\n";
+        return false;
+    }
+
+    // Set Feature Command idzie na kanał kontrolny SH-2.
+    if (!transport.write_frame(bno::ShtpChannel::Control, buf, len, err)) {
+        std::cerr << "write_frame(SetFeature) failed: " << err.message
+                  << " (errno=" << err.sys_errno << ")\n";
+        return false;
+    }
+
+    return true;
+}
+
+} // namespace
 
 int main(int argc, char** argv)
 {
@@ -97,31 +100,35 @@ int main(int argc, char** argv)
 
     bno::ShtpI2cTransport transport;
     bno::ShtpError err;
-    transport.set_max_frame_size(512);
 
     if (!transport.open(cfg.bus, cfg.addr, err)) {
-        std::cerr << "Failed to open I2C: " << err.message
-                  << " (errno=" << err.sys_errno << ")\n";
+        std::cerr << "Failed to open I2C bus=" << cfg.bus
+                  << " addr=0x" << std::hex << int(cfg.addr) << std::dec
+                  << " : " << err.message << " (errno=" << err.sys_errno << ")\n";
         return 1;
     }
 
-    // Enable potrzebnych raportów: Accel + Game Rotation Vector
-    if (!bno::enable_report_accel(transport, cfg.hz, err)) {
-        std::cerr << "Failed to enable Accel: " << err.message << "\n";
-        return 1;
+    // Tak jak w imu_read.cpp – dopiero po otwarciu:
+    transport.set_max_frame_size(bno::SHTP_MAX_FRAME);
+
+    // Uwaga: tutaj używamy TEJ SAMEJ funkcji enable_report, co w imu_read.cpp.
+    // Włączamy tylko to, czego potrzebuje detektor:
+    //  - Linear Acceleration (m/s^2)
+    //  - Game Rotation Vector (kwaternion orientacji)
+    if (!enable_report(transport, bno::Sh2SensorId::LinearAcceleration, cfg.hz, err)) {
+        std::cerr << "Failed to enable Linear Accel\n";
     }
-    if (!bno::enable_report_game_rv(transport, cfg.hz, err)) {
-        std::cerr << "Failed to enable GameRV: " << err.message << "\n";
-        return 1;
+    if (!enable_report(transport, bno::Sh2SensorId::GameRotationVector, cfg.hz, err)) {
+        std::cerr << "Failed to enable Game Rotation Vector\n";
     }
 
-    // Detektor gestów – można potem dostroić parametry
+    // Konfiguracja detektora gestów – trochę poluzowane progi na start
     bno::GestureDirectionDetector::Config det_cfg;
     det_cfg.baseline_window_s    = 0.2;
     det_cfg.half_window_s        = 0.3;
-    det_cfg.min_dyn_threshold    = 0.5;
-    det_cfg.min_peak_magnitude   = 1.5;
-    det_cfg.min_gesture_interval = 0.8;
+    det_cfg.min_dyn_threshold    = 0.3; // było 0.5
+    det_cfg.min_peak_magnitude   = 1.0; // było 1.5
+    det_cfg.min_gesture_interval = 0.5; // było 0.8
 
     bno::GestureDirectionDetector detector(det_cfg);
 
@@ -130,8 +137,7 @@ int main(int argc, char** argv)
         bool have_quat  = false;
         bno::Vec3 last_accel{};
         bno::Quat last_quat{};
-    };
-
+    } state;
 
     using clock = std::chrono::steady_clock;
     const auto t_start = clock::now();
@@ -140,89 +146,109 @@ int main(int argc, char** argv)
               << ", addr 0x" << std::hex << int(cfg.addr) << std::dec
               << ", hz=" << cfg.hz << "\n";
 
+    // Statystyki debugowe
+    std::uint64_t frames       = 0;
+    std::uint64_t events       = 0;
+    std::uint64_t accel_events = 0;
+    std::uint64_t quat_events  = 0;
+    std::uint64_t samples      = 0;
+    std::uint64_t gestures     = 0;
+    std::uint64_t timeouts     = 0;
 
-    LastState state;
-    // Pętla główna: czytamy ramki SHTP z kanałów sensorowych
+    auto last_stats_print = clock::now();
+
+    // Pętla główna
     while (true) {
         auto frame_opt = transport.read_frame(err, cfg.timeout_ms);
         if (!frame_opt) {
-            // timeout – pomijamy, to normalne przy braku danych
-            continue;
-        }
-        const auto& frame = *frame_opt;
+            ++timeouts;
+        } else {
+            const auto& frame = *frame_opt;
+            ++frames;
 
-        const auto ch = frame.header.channel;
-        // Zakładamy, że raporty sensorowe lecą na kanałach 3 i/lub 5 (jak w imu_read_cpp)
-        if (ch < 2 || ch > 5) {
-            continue;
-        }
+            const auto ch = frame.header.channel;
 
-        const std::uint8_t* p   = frame.payload.data();
-        std::size_t         len = frame.payload.size();
+            // Kanały z raportami SH-2 – jak w imu_read.cpp (2..5)
+            if (ch >= 2 && ch <= 5) {
+                const std::uint8_t* p   = frame.payload.data();
+                std::size_t         len = frame.payload.size();
 
-        // Pomiń 0xFB Base Timestamp + 5 bajtów jak w imu_read_cpp
-        if (len >= 5 && p[0] == 0xFB) {
-            p   += 5;
-            len -= 5;
-        }
-        if (len == 0) {
-            continue;
-        }
+                // Obsługa 0xFB Base Timestamp Reference (jak w imu_read.cpp)
+                if (len >= 5 && p[0] == 0xFB) {
+                    p   += 5;
+                    len -= 5;
+                }
+                if (len > 0) {
+                    auto evt_opt = bno::parse_sh2_sensor_event(p, len);
+                    if (evt_opt) {
+                        ++events;
+                        const auto& evt = *evt_opt;
 
-                auto evt_opt = bno::parse_sh2_sensor_event(p, len);
-        if (!evt_opt) {
-            continue;
-        }
-        const auto& evt = *evt_opt;
+                        if (evt.accel.has_value()) {
+                            ++accel_events;
+                            state.have_accel = true;
+                            state.last_accel = bno::Vec3{
+                                evt.accel->x,
+                                evt.accel->y,
+                                evt.accel->z,
+                            };
+                        }
 
-        // Uaktualnij ostatnie znane accel / quat
-        if (evt.accel.has_value()) {
-            state.have_accel = true;
-            state.last_accel = bno::Vec3{
-                evt.accel->x,
-                evt.accel->y,
-                evt.accel->z,
-            };
-        }
-
-        if (evt.game_quat.has_value()) {
-            state.have_quat = true;
-            state.last_quat = bno::Quat{
-                evt.game_quat->real,
-                evt.game_quat->i,
-                evt.game_quat->j,
-                evt.game_quat->k,
-            };
-        }
-
-        // Jeśli jeszcze nie mamy kompletnego zestawu (accel + quat), czekamy dalej
-        if (!state.have_accel || !state.have_quat) {
-            continue;
+                        if (evt.game_quat.has_value()) {
+                            ++quat_events;
+                            state.have_quat = true;
+                            state.last_quat = bno::Quat{
+                                evt.game_quat->real,
+                                evt.game_quat->i,
+                                evt.game_quat->j,
+                                evt.game_quat->k,
+                            };
+                        }
+                    }
+                }
+            }
         }
 
-        // Zbuduj próbkę z „ostatniego accel” i „ostatniego quat”
-        const auto now   = clock::now();
-        const double t_s = std::chrono::duration<double>(now - t_start).count();
+        // Jeśli mamy komplet (accel + quat), karmimy detektor
+        if (state.have_accel && state.have_quat) {
+            const auto now   = clock::now();
+            const double t_s = std::chrono::duration<double>(now - t_start).count();
 
-        detector.add_sample(t_s, state.last_accel, state.last_quat);
+            detector.add_sample(t_s, state.last_accel, state.last_quat);
+            ++samples;
 
+            if (auto res_opt = detector.poll_result()) {
+                ++gestures;
+                const auto& res = *res_opt;
 
-        if (auto res_opt = detector.poll_result()) {
-            const auto& res = *res_opt;
+                std::cout
+                    << "t=" << res.t_center
+                    << " dir=" << res.label
+                    << " axis=" << res.axis << res.sign
+                    << " dv=(" << res.delta_v_world.x
+                    << "," << res.delta_v_world.y
+                    << "," << res.delta_v_world.z << ")"
+                    << " dur=" << res.duration
+                    << "\n";
+                std::cout.flush();
+            }
+        }
 
-            res.compute_baseline_if_ready();
-            res.maybe_detect_gesture();
-            // Prosty tekstowy output 1 linia = 1 gest
-            std::cout
-                << "t=" << res.t_center
-                << " dir=" << res.label
-                << " axis=" << res.axis << res.sign
-                << " dv=(" << res.delta_v_world.x
-                << "," << res.delta_v_world.y
-                << "," << res.delta_v_world.z << ")"
-                << " dur=" << res.duration
+        // Co około 1 s wypisz statystyki na stderr
+        const auto now_stats = clock::now();
+        const double dt_stats =
+            std::chrono::duration<double>(now_stats - last_stats_print).count();
+        if (dt_stats > 1.0) {
+            last_stats_print = now_stats;
+            std::cerr
+                << "[stats] frames="       << frames
+                << " events="             << events
+                << " accel_events="       << accel_events
+                << " quat_events="        << quat_events
+                << " samples="            << samples
+                << " gestures="           << gestures
+                << " timeouts="           << timeouts
                 << "\n";
-            std::cout.flush();
         }
     }
 
